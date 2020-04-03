@@ -4,6 +4,7 @@
 //                 Connor Schlesiger <https://github.com/schlesiger>
 //                 Clayton Astrom <https://github.com/ClaytonAstrom>
 //                 Lukas Beranek <https://github.com/lloiser>
+//                 Riain Condon <https://github.com/Stetchy>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
 
@@ -584,6 +585,11 @@ export interface Expect extends NightwatchLanguageChains, NightwatchBrowser {
     css(property: string, message?: string): this;
 
     /**
+     * Checks if the number of elements specified by a selector is equal or not to a given value.
+     */
+    count: this;
+
+    /**
      * Property that checks if an element is currently enabled.
      */
     enabled: this;
@@ -594,6 +600,20 @@ export interface Expect extends NightwatchLanguageChains, NightwatchBrowser {
     present: this;
 
     /**
+     * Checks if a given DOM property of an element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     *
+     * @example
+     * this.demoTest = function (browser) {
+     *   browser.expect.element('body').to.have.propery('className').equals('test-class');
+     *   browser.expect.element('body').to.have.propery('className').matches(/^something\ else/);
+     *   browser.expect.element('body').to.not.have.propery('classList').equals('test-class');
+     *   browser.expect.element('body').to.have.propery('classList').deep.equal(['class-one', 'class-two']);
+     *   browser.expect.element('body').to.have.propery('classList').contain('class-two');
+     * };
+     */
+    property(property: string, message?: string): this;
+
+    /**
      * Property that checks if an OPTION element, or an INPUT element of type checkbox or radio button is currently selected.
      */
     selected: this;
@@ -602,6 +622,28 @@ export interface Expect extends NightwatchLanguageChains, NightwatchBrowser {
      * Property that retrieves the text contained by an element. Can be chained to check if contains/equals/matches the specified text or regex.
      */
     text: this;
+
+    /**
+     * Checks if the content of the page title is of an expected value.
+     *
+     * @example
+     * this.demoTest = function (browser) {
+     *   browser.expect.title().to.contain('value');
+     *   browser.expect.title().to.match(/value/);
+     * }
+     */
+    title(): this;
+
+    /**
+     * Checks if the page url is of an expected value.
+     *
+     * @example
+     * this.demoTest = function (browser) {
+     *   browser.expect.url().to.contain('https://');
+     *   browser.expect.url().to.endWidth('.org');
+     * }
+     */
+    url(): this;
 
     /**
      * Property that retrieves the value (i.e. the value attributed) of an element. Can be chained to check if contains/equals/matches the specified text or regex.
@@ -683,6 +725,40 @@ export interface NightwatchCommonAssertions {
      * ```
      */
     cssProperty(selector: string, cssProperty: string, expected: string | number, msg?: string): NightwatchAPI;
+    
+    /**
+     * Checks if the specified DOM property of a given element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * Several properties can be specified (either as an array or command-separated list). Nightwatch will check each one for presence.
+     *
+     * ```
+     *    this.demoTest = function (browser) {
+     *      browser.assert.domPropertyContains('#main', 'classList', 'visible');
+     *
+     *      // in case the resulting property is an array, several elements could be specified
+     *      browser.assert.domPropertyEquals('#main', 'classList', ['class-one', 'class-two']);
+     *      browser.assert.domPropertyEquals('#main', 'classList', 'class-one,class-two');
+     *    };
+     * ```
+     */
+    domPropertyContains(selector: string, domProperty: string, expected: string, msg?: string): NightwatchAPI;
+
+    /**
+     * Checks if the specified DOM property of a given element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * If the result value is JSON object or array, a deep equality comparison will be performed.
+     *
+     * ```
+     *    this.demoTest = function (browser) {
+     *      browser.assert.domPropertyEquals('#main', 'className', 'visible');
+     *
+     *      // deep equal will be performed
+     *      browser.assert.domPropertyEquals('#main', 'classList', ['class-one', 'class-two']);
+     *
+     *      // split on ',' and deep equal will be performed
+     *      browser.assert.domPropertyEquals('#main', 'classList', 'class-one,class-two']);
+     *    };
+     * ```
+     */
+    domPropertyEquals(selector: string, domProperty: string, expected: string, msg?: string): NightwatchAPI;
 
     deepEqual(value: any, expected: any, message?: string): NightwatchAPI;
 
@@ -1319,6 +1395,83 @@ export interface ClientCommands {
     getTitle(callback?: (this: NightwatchAPI, result?: string) => void): this;
 
     /**
+     * Retrieves the current window position.
+     *
+     * For clients which are compatible with the [W3C Webdriver API](https://w3c.github.io/webdriver/), `getWindowPosition` is an alias of `getWindowRect`.
+     *
+     * The `getWindowRect` command returns both dimensions and position of the window, using the `windowRect` protocol command.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .getWindowPosition()': function(browser) {
+     *      // Retrieve the attributes
+     *      browser.getWindowPosition(function(value) {
+     *        console.log(value);
+     *      });
+     *   },
+     *
+     *   'getWindowPosition ES6 demo test': async function(browser) {
+     *      const value = await browser.getWindowPosition();
+     *      console.log('value', value);
+     *   }
+     * }
+     *
+     */
+    getWindowPosition(callback?: (this: NightwatchAPI, result?: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     *
+     * Its JSON representation is the following:
+     * - `x` - window's screenX attribute;
+     * - `y` - window's screenY attribute;
+     * - `width` - outerWidth attribute;
+     * - `height` - outerHeight attribute.
+     *
+     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .getWindowRect()': function(browser) {
+     *      // Retrieve the attributes
+     *      browser.getWindowRect(function(value) {
+     *        console.log(value);
+     *      });
+     *   },
+     *
+     *   'getWindowRect ES6 demo test': async function(browser) {
+     *      const resultValue = await browser.getWindowRect();
+     *      console.log('result value', resultValue);
+     *   }
+     * }
+     */
+    getWindowRect(callback?: (this: NightwatchAPI, result?: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * Retrieves the current window size.
+     *
+     * For clients which are compatible with the [W3C Webdriver API](https://w3c.github.io/webdriver/), `getWindowSize` is an alias of `getWindowRect`.
+     *
+     * The `getWindowRect` command returns both dimensions and position of the window, using the `windowRect` protocol command.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .getWindowSize()': function(browser) {
+     *      // Retrieve the attributes
+     *      browser.getWindowSize(function(value) {
+     *        console.log(value);
+     *      });
+     *   },
+     *
+     *   'getWindowSize ES6 demo test': async function(browser) {
+     *      const value = await browser.getWindowSize();
+     *      console.log('value', value);
+     *   }
+     * }
+     */
+    getWindowSize(callback?: (this: NightwatchAPI, result?: NightwatchCallbackResult<void>) => void): this;
+
+    /**
      * This command is an alias to url and also a convenience method when called without any arguments in the sense
      * that it performs a call to .url() with passing the value of `launch_url` field from the settings file.
      * Uses `url` protocol command.
@@ -1490,6 +1643,58 @@ export interface ClientCommands {
     setWindowPosition(offsetX: number, offsetY: number, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
 
     /**
+     * Change the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     *
+     * Its JSON representation is the following:
+     * - `x` - window's screenX attribute;
+     * - `y` - window's screenY attribute;
+     * - `width` - outerWidth attribute;
+     * - `height` - outerHeight attribute.
+     *
+     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     * @example
+     * module.exports = {
+     *   'demo test .setWindowRect()': function(browser) {
+     *
+     *      // Change the screenX and screenY attributes of the window rect.
+     *      browser.setWindowRect({x: 500, y: 500});
+     *
+     *      // Change the width and height attributes of the window rect.
+     *      browser.setWindowRect({width: 600, height: 300});
+     *
+     *      // Retrieve the attributes
+     *      browser.setWindowRect(function(result) {
+     *        console.log(result.value);
+     *      });
+     *   },
+     *
+     *   'setWindowRect ES6 demo test': async function(browser) {
+     *      await browser.setWindowRect({
+     *        width: 600,
+     *        height: 300,
+     *        x: 100,
+     *        y: 100
+     *      });
+     *   }
+     * }
+     */
+    setWindowRect(
+        options?: {x: number, y: number} | {width: number, height: number} | {width: number, height: number, x: number, y: number}, 
+        callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * 
+     * Sets the current window size in CSS pixels.
+     *
+     * @example
+     *  this.demoTest = function (browser) {
+     *    browser.setWindowSize(400, 600);
+     *  };
+     *
+     */
+    setWindowSize(width: number, height: number, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
+
+    /**
      * Change focus to another window. The window to change focus to may be specified by its server assigned window handle, or by the value of its name attribute.
      *
      * To find out the window handle use `windowHandles` command
@@ -1610,6 +1815,37 @@ export interface ElementCommands {
      * @see elementIdCssProperty
      */
     getCssProperty(selector: string, cssProperty: string, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void): this;
+
+    /**
+     * @example
+     * module.exports = {
+     *   demoTest(browser) {
+     *     browser.getElementProperty('#login input[type=text]', 'classList', function(result) {
+     *       console.log('result', result);
+     *     });
+     *
+     *     // with explicit locate strategy
+     *     browser.getElementProperty('css selector', '#login input[type=text]', 'classList', function(result) {
+     *       console.log('result', result);
+     *     });
+     *
+     *     // with selector object - see https://nightwatchjs.org/guide#element-properties
+     *     browser.getElementProperty({
+     *       selector: '#login input[type=text]',
+     *       index: 1,
+     *       suppressNotFoundErrors: true
+     *     }, 'classList', function(result) {
+     *       console.log('result', result);
+     *     });
+     *   },
+     *
+     *   demoTestAsync: async function(browser) {
+     *     const result = await browser.getElementProperty('#login input[type=text]', 'classList');
+     *     console.log('classList', result);
+     *   }
+     * }
+     */
+    getElementProperty(selector: string, elementProperty: string, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string | null>) => void): this;
 
     /**
      * Determine an element's size in pixels. Uses `elementIdSize` protocol command.
