@@ -540,6 +540,19 @@ export interface NightwatchTestSettings {
 
 export interface Expect extends NightwatchLanguageChains, NightwatchBrowser {
     /**
+     * Property that checks if an element is active in the DOM.
+     *
+     * @example
+     * this.demoTest = function (browser) {
+     *   browser.expect.element('#main').to.be.active;
+     *   browser.expect.element('#main').to.not.be.active;
+     *   browser.expect.element('#main').to.be.active.before(100);
+     * };
+     *
+     */
+    active: this;
+
+    /**
      * Returns the DOM Element
      */
     element(property: string): this;
@@ -2386,6 +2399,117 @@ export interface WebDriverProtocolCommandContexts {
     windowPosition(windowHandle: string, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<{ x: number; y: number }>) => void): this;
 
     /**
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     *
+     * Its JSON representation is the following:
+     * - `x` - window's screenX attribute;
+     * - `y` - window's screenY attribute;
+     * - `width` - outerWidth attribute;
+     * - `height` - outerHeight attribute.
+     *
+     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .windowRect()': function(browser) {
+     *
+     *      // Change the screenX and screenY attributes of the window rect.
+     *      browser.windowRect({x: 500, y: 500});
+     *
+     *      // Change the width and height attributes of the window rect.
+     *      browser.windowRect({width: 600, height: 300});
+     *
+     *      // Retrieve the attributes
+     *      browser.windowRect(function(result) {
+     *        console.log(result.value);
+     *      });
+     *   },
+     *
+     *   'windowRect ES6 demo test': async function(browser) {
+     *      const resultValue = await browser.windowRect();
+     *      console.log('result value', resultValue);
+     *   }
+     * }
+     */
+    windowRect(
+        options: {width: number, height: number}, 
+        callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<{width: number, height: number}>) => void): this;
+
+    /**
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     *
+     * Its JSON representation is the following:
+     * - `x` - window's screenX attribute;
+     * - `y` - window's screenY attribute;
+     * - `width` - outerWidth attribute;
+     * - `height` - outerHeight attribute.
+     *
+     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .windowRect()': function(browser) {
+     *
+     *      // Change the screenX and screenY attributes of the window rect.
+     *      browser.windowRect({x: 500, y: 500});
+     *
+     *      // Change the width and height attributes of the window rect.
+     *      browser.windowRect({width: 600, height: 300});
+     *
+     *      // Retrieve the attributes
+     *      browser.windowRect(function(result) {
+     *        console.log(result.value);
+     *      });
+     *   },
+     *
+     *   'windowRect ES6 demo test': async function(browser) {
+     *      const resultValue = await browser.windowRect();
+     *      console.log('result value', resultValue);
+     *   }
+     * }
+     */
+    windowRect(
+        options: {x: number, y: number}, 
+        callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<{x: number, y: number}>) => void): this;
+
+    /**
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     *
+     * Its JSON representation is the following:
+     * - `x` - window's screenX attribute;
+     * - `y` - window's screenY attribute;
+     * - `width` - outerWidth attribute;
+     * - `height` - outerHeight attribute.
+     *
+     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     *
+     * @example
+     * module.exports = {
+     *   'demo test .windowRect()': function(browser) {
+     *
+     *      // Change the screenX and screenY attributes of the window rect.
+     *      browser.windowRect({x: 500, y: 500});
+     *
+     *      // Change the width and height attributes of the window rect.
+     *      browser.windowRect({width: 600, height: 300});
+     *
+     *      // Retrieve the attributes
+     *      browser.windowRect(function(result) {
+     *        console.log(result.value);
+     *      });
+     *   },
+     *
+     *   'windowRect ES6 demo test': async function(browser) {
+     *      const resultValue = await browser.windowRect();
+     *      console.log('result value', resultValue);
+     *   }
+     * }
+     */
+    windowRect(
+        options: {width: number, height: number, x: number, y: number}, 
+        callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<{width: number, height: number, x: number, y: number}>) => void): this;
+
+    /**
      * Change or get the size of the specified window. If the second argument is a function it will be used as a callback and the call will perform a get request to retrieve the existing window size.
      *
      * @example
@@ -2449,6 +2573,72 @@ export interface WebDriverProtocolCommandContexts {
      * @since v0.4.8
      */
     frameParent(callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * Sets the current window state to fullscreen.
+     *
+     * @example
+     * module.exports = {
+     *  'demo Test': function(browser) {
+     *     browser.fullscreenWindow(function(result) {
+     *       console.log(result);
+     *     });
+     *   },
+     *
+     *   'ES6 async demo Test': async function(browser) {
+     *     const result = await browser.fullscreenWindow();
+     *     console.log('result value is:', result.value);
+     *   }
+     * }
+     */
+    fullscreenWindow(callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * Hides the window in the system tray. If the window happens to be in fullscreen mode, it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
+     *
+     * @example
+     * module.exports = {
+     *  'demo Test': function(browser) {
+     *     browser.minimizeWindow(function(result) {
+     *       console.log(result);
+     *     });
+     *   },
+     *
+     *   'ES6 async demo Test': async function(browser) {
+     *     const result = await browser.minimizeWindow();
+     *     console.log('result value is:', result.value);
+     *   }
+     * }
+     */
+    minimizeWindow(callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
+
+    /**
+     * Opens a new top-level browser window, which can be either a tab (default) or a separate new window.
+     *
+     * This command is only available for W3C Webdriver compatible browsers.
+     *
+     * @example
+     * module.exports = {
+     *  'demo Test': function(browser) {
+     *     // open a new window tab (default)
+     *     browser.openNewWindow(function(result) {
+     *       console.log(result);
+     *     });
+     *
+     *     // open a new window
+     *     browser.openNewWindow('window', function(result) {
+     *       console.log(result);
+     *     });
+     *   },
+     *
+     *   'ES6 async demo Test': async function(browser) {
+     *     const result = await browser.fullscreenWindow();
+     *     console.log('result value is:', result.value);
+     *   }
+     * }
+     * 
+     */
+    openNewWindow(string?: "tab" | "window", callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
 }
 
 export interface WebDriverProtocolElements {
@@ -2618,6 +2808,14 @@ export interface WebDriverProtocolElementState {
      * Retrieve the qualified tag name of the given element.
      */
     elementIdName(id: string, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void): this;
+
+    /**
+     * Retrieve the value of a specified DOM property for the given element. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     */
+    elementIdProperty(
+        webElementId: string, 
+        domPropertyName: string, 
+        callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void): this;
 
     /**
      * Determine if an OPTION element, or an INPUT element of type checkbox or radio button is currently selected.
