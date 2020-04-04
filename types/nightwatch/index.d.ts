@@ -613,7 +613,8 @@ export interface Expect extends NightwatchLanguageChains, NightwatchBrowser {
     present: this;
 
     /**
-     * Checks if a given DOM property of an element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * Checks if a given DOM property of an element has the expected value. For all the available DOM element properties, 
+     * consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
      *
      * @example
      * this.demoTest = function (browser) {
@@ -739,7 +740,8 @@ export interface NightwatchCommonAssertions {
     cssProperty(selector: string, cssProperty: string, expected: string | number, msg?: string): NightwatchAPI;
 
     /**
-     * Checks if the specified DOM property of a given element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * Checks if the specified DOM property of a given element has the expected value. For all the available DOM element properties, 
+     * consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
      * Several properties can be specified (either as an array or command-separated list). Nightwatch will check each one for presence.
      *
      * ```
@@ -755,7 +757,8 @@ export interface NightwatchCommonAssertions {
     domPropertyContains(selector: string, domProperty: string, expected: string, msg?: string): NightwatchAPI;
 
     /**
-     * Checks if the specified DOM property of a given element has the expected value. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * Checks if the specified DOM property of a given element has the expected value. 
+     * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
      * If the result value is JSON object or array, a deep equality comparison will be performed.
      *
      * ```
@@ -1459,7 +1462,8 @@ export interface ClientCommands {
     getWindowPosition(callback?: (this: NightwatchAPI, result?: NightwatchCallbackResult<void>) => void): this;
 
     /**
-     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the 
+     * `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
      *
      * Its JSON representation is the following:
      * - `x` - window's screenX attribute;
@@ -2567,7 +2571,8 @@ export interface WebDriverProtocolCommandContexts {
     ): this;
 
     /**
-     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). 
+     * This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
      *
      * Its JSON representation is the following:
      * - `x` - window's screenX attribute;
@@ -2575,7 +2580,8 @@ export interface WebDriverProtocolCommandContexts {
      * - `width` - outerWidth attribute;
      * - `height` - outerHeight attribute.
      *
-     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     * All attributes are in in CSS pixels. To change the window react, you can either specify 
+     * `width` and `height`, `x` and `y` or all properties together.
      *
      * @example
      * module.exports = {
@@ -2605,7 +2611,8 @@ export interface WebDriverProtocolCommandContexts {
     ): this;
 
     /**
-     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). 
+     * This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
      *
      * Its JSON representation is the following:
      * - `x` - window's screenX attribute;
@@ -2613,7 +2620,8 @@ export interface WebDriverProtocolCommandContexts {
      * - `width` - outerWidth attribute;
      * - `height` - outerHeight attribute.
      *
-     * All attributes are in in CSS pixels. To change the window react, you can either specify `width` and `height`, `x` and `y` or all properties together.
+     * All attributes are in in CSS pixels. To change the window react, 
+     * you can either specify `width` and `height`, `x` and `y` or all properties together.
      *
      * @example
      * module.exports = {
@@ -2643,7 +2651,8 @@ export interface WebDriverProtocolCommandContexts {
     ): this;
 
     /**
-     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
+     * Change or get the [window rect](https://w3c.github.io/webdriver/#dfn-window-rect). 
+     * This is defined as a dictionary of the `screenX`, `screenY`, `outerWidth` and `outerHeight` attributes of the window.
      *
      * Its JSON representation is the following:
      * - `x` - window's screenX attribute;
@@ -2779,7 +2788,8 @@ export interface WebDriverProtocolCommandContexts {
     fullscreenWindow(callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<void>) => void): this;
 
     /**
-     * Hides the window in the system tray. If the window happens to be in fullscreen mode, it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
+     * Hides the window in the system tray. If the window happens to be in fullscreen mode, 
+     * it is restored the normal state then it will be "iconified" - minimize or hide the window from the visible screen.
      *
      * @example
      * module.exports = {
@@ -3036,7 +3046,8 @@ export interface WebDriverProtocolElementState {
     elementIdName(id: string, callback?: (this: NightwatchAPI, result: NightwatchCallbackResult<string>) => void): this;
 
     /**
-     * Retrieve the value of a specified DOM property for the given element. For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
+     * Retrieve the value of a specified DOM property for the given element. 
+     * For all the available DOM element properties, consult the [Element doc at MDN](https://developer.mozilla.org/en-US/docs/Web/API/element).
      */
     elementIdProperty(
         webElementId: string,
